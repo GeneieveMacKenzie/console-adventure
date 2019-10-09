@@ -13,7 +13,11 @@ namespace ConsoleAdventure.Project.Controllers
         //NOTE Makes sure everything is called to finish Setup and Starts the Game loop
         public void Run()
         {
-
+            while(true)
+            {
+                Print();
+                GetUserInput();
+            }
         }
 
         //NOTE Gets the user input, calls the appropriate command, and passes on the option if needed.
