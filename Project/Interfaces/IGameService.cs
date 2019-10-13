@@ -7,7 +7,7 @@ namespace ConsoleAdventure.Project.Interfaces
     {
         List<string> Messages { get; }
         void Setup(string playerName);
-
+        
         void Reset();
 
         #region Console Commands

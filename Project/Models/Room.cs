@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ConsoleAdventure.Project.Interfaces;
 
@@ -11,10 +12,31 @@ namespace ConsoleAdventure.Project.Models
         public List<Item> Items { get; set; }
         public Dictionary<string, IRoom> Exits { get; set; }
 
-        public void AddExit(IRoom room)
+        public IRoom Go(string direction)
         {
-            Exits.Add(room.Name, room);
+            if(Exits.ContainsKey(direction))
+            {
+                return Exits[direction];
+            }
+            return this;
         }
+
+
+        public string GetTemplate()
+        {
+            string template = $"\n{Description}";
+            foreach(var exit in Exits)
+            {
+                template += "\n\t Go " + exit.Key + " to enter " + exit.Value.Name + Environment.NewLine;
+            }
+            foreach(var item in Items)
+            {
+                template += item.Name + "-" + item.Description;
+            }
+            return template;
+
+        }
+
         public Room(string name, string description)
         {
             Name = name;
