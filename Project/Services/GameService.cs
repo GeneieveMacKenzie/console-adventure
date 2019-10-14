@@ -20,35 +20,45 @@ namespace ConsoleAdventure.Project
             string from = _game.CurrentRoom.Name;
             _game.CurrentRoom = _game.CurrentRoom.Go(direction);
             string to = _game.CurrentRoom.Name;
-            if (from == to)
+            if (_game.CurrentRoom.Name == "Goulish Gallery")
             {
-                Messages.Add("Invalid direction");
+                Messages.Add(_game.CurrentRoom.GetTemplate3());
                 return;
             }
-            Messages.Add($"Welcome to {to}");
-            Messages.Add(_game.CurrentRoom.GetTemplate());
+            else
+            {
+                Messages.Add(_game.CurrentRoom.GetTemplate());
+                return;
+            }
 
+   
         }
         public void Help()
         {
-            Messages.Add("\n Go - This will allow you to choose a direction for the room you want to enter \n Take Item - This will add the item into your inventory \n Use Item - This will use the item and remove it from your inventory \n Quit - This will exit the game.");
+            Messages.Add("\n Go - Choose a direction for the room you want to enter \n Take Item - Add the item into your inventory \n Use Item - Use the item and remove it from your inventory \n Quit - Exit the game.");
 
         }
 
         public void Inventory()
         {
-            foreach(Item item in _game.CurrentPlayer.Inventory)
-            {
-                if(_game.CurrentPlayer.Inventory.Count == 0)
+                if (_game.CurrentPlayer.Inventory.Count == 0)
                 {
                     Messages.Add("You have no items in your inventory");
+                    return;
                 }
-            Messages.Add($"Inventory: {item}");
+            foreach (Item item in _game.CurrentPlayer.Inventory)
+            {
+                Messages.Add($"\n {item.Name}: {item.Description}");
             }
         }
 
         public void Look()
         {
+            if (_game.CurrentRoom.Name == "Goulish Gallery")
+            {
+                Messages.Add(_game.CurrentRoom.GetTemplate3());
+                return;
+            }
             Messages.Add(_game.CurrentRoom.GetTemplate());
         }
 
@@ -66,25 +76,29 @@ namespace ConsoleAdventure.Project
 
         public void Setup(string playerName)
         {
-            Messages.Add($"Welcome to {_game.CurrentPlayer.Name}");
+            Messages.Add($"Welcome {playerName},");
             Messages.Add(_game.CurrentRoom.GetTemplate());
         }
         ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
         public void TakeItem(string itemName)
         {
-            foreach(Item item in _game.CurrentRoom.Items)
+            if (_game.CurrentRoom.Items.Count == 0)
+            {
+                Messages.Add("no items to pick up");
+                return;
+            }
+            foreach (Item item in _game.CurrentRoom.Items)
             {
                 if (item.Name == itemName)
                 {
                     Messages.Add($"{itemName} has been added to your inventory");
                     _game.CurrentPlayer.Inventory.Add(item);
-                    _game.CurrentRoom.Items.Remove(item);
+                    _game.CurrentRoom.Items.Remove(item);//fix me
+                    return;
                 }
                 else
                 {
-                Messages.Add("No items available");
-                Messages.Add(itemName);
-                Messages.Add(item.Name);
+                    Messages.Add("item not available to take");
                 }
             }
         }
@@ -95,7 +109,28 @@ namespace ConsoleAdventure.Project
         ///</summary>
         public void UseItem(string itemName)
         {
-            throw new System.NotImplementedException();
+            if(_game.CurrentPlayer.Inventory.Count == 0)
+            {
+                Messages.Add("You have no items in your inventory");
+                return;
+            }
+            foreach (Item item in _game.CurrentPlayer.Inventory)
+            {
+                if (item.Name == itemName && _game.CurrentRoom.Name == "Goulish Gallery")
+                {
+                    Messages.Add(_game.CurrentRoom.GetTemplate2());
+                    _game.CurrentRoom.Items.Remove(item);
+                    return;
+                }
+                else if (item.Name != itemName)
+                {
+                    Messages.Add("That is not a valid item in your inventory");
+                    return;
+                }
+                    Messages.Add("A face appears in the crystal ball and in a loud screech you hear 'I am no help to you here'.");
+                    return; 
+            }
+
         }
     }
 }

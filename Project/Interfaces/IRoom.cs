@@ -11,6 +11,8 @@ namespace ConsoleAdventure.Project.Interfaces
         Dictionary<string, IRoom> Exits { get; set; }
 
         string GetTemplate();
+        string GetTemplate2();
+        string GetTemplate3();
         IRoom Go(string direction);
 
     }

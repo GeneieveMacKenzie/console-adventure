@@ -24,17 +24,35 @@ namespace ConsoleAdventure.Project.Models
 
         public string GetTemplate()
         {
-            string template = $"\n{Description}";
+            string template = $"\n{Description}\n";
+            foreach(var exit in Exits)
+            {
+                template += "\n\t\t Go " + exit.Key + " to enter " + exit.Value.Name + Environment.NewLine + "\n";
+            }
+            foreach(var item in Items)
+            {
+                template += "\n" + item.Name + ": " + item.Description;
+            }
+            return template;
+            
+
+        }
+
+        public string GetTemplate3()
+        {
+            string template = $"\n{Description}\n";
+            return template;
+        }
+
+        public string GetTemplate2()
+        {
+            string template = "Suddenly doors appear on each wall in the gallery and you hear a sound coming from the crystal ball. 'North, East, South, West. I will not say which one is best but I will tell thee, to the North is what you have seen. Going east could get scary and west will surely be hairy. Mark my words, I cannot deny that if you go south you'll most certainly die.' \n\n";
             foreach(var exit in Exits)
             {
                 template += "\n\t Go " + exit.Key + " to enter " + exit.Value.Name + Environment.NewLine;
             }
-            foreach(var item in Items)
-            {
-                template += item.Name + "-" + item.Description;
-            }
-            return template;
 
+            return template;
         }
 
         public Room(string name, string description)
